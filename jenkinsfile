@@ -1,0 +1,26 @@
+pipeline {
+  agent any
+  stages {
+    stage('Checkout Scm') {
+      steps {
+        git 'https://github.com/agnidat/hello-world.git'
+      }
+    }
+
+    stage('Maven Build 0') {
+      steps {
+        sh 'mvn clean install'
+      }
+    }
+
+  }
+  tools {
+    jdk ''
+  }
+  post {
+    always {
+      step($class: 'ArtifactArchiver', artifacts: '**', followSymlinks: false)
+    }
+
+  }
+}
